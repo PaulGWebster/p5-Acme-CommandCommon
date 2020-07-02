@@ -54,21 +54,21 @@ BEGIN {
         };
     }
 }
- 
- 
+
+=cut
+
 sub new {
     my $class = shift;
     my %opts  = @_;
  
     return bless \%opts, $class;
- 
 }
- 
+
 ### Eugggh, this code smells 
 ### This is what happens when you keep adding patches
 ### *sigh*
- 
- 
+
+
 sub plugins {
     my $self = shift;
     my @args = @_;

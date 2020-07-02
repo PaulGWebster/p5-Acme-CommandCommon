@@ -48,7 +48,7 @@ use open qw(:std :utf8);
 use experimental qw(signatures);
 
 # External modules
-use Module::Pluggable instantiate => 'new';
+use Acme::CommandCommon::PluginLoader instantiate => 'new';
 use Carp;
 
 # Version of this software
