@@ -8,6 +8,7 @@ use Carp qw(croak carp confess);
 use Devel::InnerPackage;
 use vars qw($VERSION $MR);
 
+use v5.16.0;
 use if $] > 5.017, 'deprecate';
 
 # Version of this software
@@ -19,27 +20,24 @@ our $VERSION = '5.2';
 
 Acme::CommandCommon::PluginLoader::Object - (A version frozen copy of Module::Pluggable 5.2)
 
-=head2 README - LICENSE
+=head2 README
 
 This is a DIRECT COPY of https://metacpan.org/release/Module-Pluggable/source/lib/Module/Pluggable.pm
-Which has been renamed to stop module name collisions, due to the nature of 
-CommandCommon in that it requires explicit versioning and requires as little
-moving parts as possible, I decided that the best thing to do in regards to
-the plugin loader was to use one I knew worked and leave this notice in it
-along with its LICENSE, I could find no LICENSE file the only reference to
-any license is found in the POD and reads:
 
-    COPYING
+It is only used exclusively for Acme::CommandCommon and is therefore not documented,
+the reason for copying this module is to guarantee compatability going forwards.
 
-    Copyright, 2006 Simon Wistow
-
-    Distributed under the same terms as Perl itself.
-
-So I have included that as well as this notice.
+If you are interested in using a pluginloader, please see the original version 
+of this module at: https://metacpan.org/pod/Module::Pluggable
 
 =head2 LICENSE
 
-I have no idea what to write here.
+The original for this module and indeed CommandCommon both use the same license 
+as perl its self.
+
+=head2 AUTHOR
+
+=cut
 
 BEGIN {
     eval {  require Module::Runtime };
@@ -397,5 +395,5 @@ sub handle_innerpackages {
     return @plugins;
  
 }
- 
+
 1;

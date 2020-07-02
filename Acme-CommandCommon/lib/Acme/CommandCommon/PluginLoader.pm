@@ -4,6 +4,7 @@ use strict;
 use vars qw($VERSION $FORCE_SEARCH_ALL_PATHS);
 use Acme::CommandCommon::PluginLoader::Object;
 
+use v5.16.0;
 use if $] > 5.017, 'deprecate';
 
 # Version of this software
@@ -52,8 +53,7 @@ sub import {
     $opts{filename}  = $file;
     $opts{package}   = $package;
     $opts{force_search_all_paths} = $FORCE_SEARCH_ALL_PATHS unless exists $opts{force_search_all_paths};
- 
- 
+
     my $finder       = Acme::CommandCommon::PluginLoader::Object->new(%opts);
     my $subroutine   = sub { my $self = shift; return $finder->plugins(@_) };
  
