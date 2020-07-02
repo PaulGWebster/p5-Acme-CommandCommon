@@ -6,7 +6,8 @@ use Acme::CommandCommon::PluginLoader::Object;
 
 use if $] > 5.017, 'deprecate';
 
-$VERSION = '5.2';
+# Version of this software
+our $VERSION = '5.2';
 $FORCE_SEARCH_ALL_PATHS = 0;
 
 =pod

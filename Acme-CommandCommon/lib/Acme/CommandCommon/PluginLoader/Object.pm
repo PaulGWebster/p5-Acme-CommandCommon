@@ -7,13 +7,14 @@ use File::Spec::Functions qw(splitdir catdir curdir catfile abs2rel);
 use Carp qw(croak carp confess);
 use Devel::InnerPackage;
 use vars qw($VERSION $MR);
- 
+
 use if $] > 5.017, 'deprecate';
- 
-$VERSION = '5.2';
+
+# Version of this software
+our $VERSION = '5.2';
 
 =pod
- 
+
 =head1 NAME
 
 Acme::CommandCommon::PluginLoader::Object - (A version frozen copy of Module::Pluggable 5.2)
