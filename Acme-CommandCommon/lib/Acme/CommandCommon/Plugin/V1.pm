@@ -1,19 +1,5 @@
 package Acme::CommandCommon::Plugin::V1;
 
-=head1 NAME
-
-Acme::CommandCommon::Plugin::V1 - Version 1 common commands
-
-=head1 SYNOPSIS
-
-=for comment Brief examples of using the module.
-
-=head1 DESCRIPTION
-
-=for comment The module's description.
-
-=cut
-
 # Internal perl
 use v5.30.0;
 use feature 'say';
@@ -39,26 +25,105 @@ use IO::Socket::INET;
 # Version of this software
 our $VERSION = '0.001';
 
+=head1 NAME
+
+Acme::CommandCommon::Plugin::V1 - Version 1 common commands
+
+=head1 SYNOPSIS
+
+=for comment Brief examples of using the module.
+
+    # To call this plugin directly:
+    my $v1 = Acme::CommandCommon::Plugin::V1->new();
+    my $count = $v1->count_occurrences(
+        qr/some_text/,
+        'some_text and some_text'
+    );
+    say "Count: $count"; # 2
+
+    # Or to use the interface like you are meant to :)
+    my $common = Acme::CommandCommon->new(1);
+    my $count = $common->exec(
+        'count_occurrences',
+        qr/some_text/,
+        'some_text and some_text'
+    );
+    say "Count: $count"; # 2
+
+=head1 DESCRIPTION
+
+=for comment The module's description.
+
+Version 1 of the CommandCommon functions, can be used directly.
+
+=cut
+
 # Primary code block
 sub new {
     my ($class,$args) = @_;
 
     my $self = bless {
-        functions   =>  {
-            count_occurrences   =>  \&count_occurrences,
-            split_on_seperator  =>  \&split_on_seperator,
-            test_tcp4_bind      =>  \&test_tcp4_bind,
-            valid_ipv4          =>  \&valid_ipv4,
-        },
+        functions   =>  qw[
+            count_occurrences
+            split_on_seperator
+            test_tcp4_bind
+            valid_ipv4
+        ],
         version     =>  1,
     }, $class;
 
     return $self;  
 }
 
-=head2 count_occurrences
+=head1 FUNCTIONS
 
-Count the occurences of a regex or string within a string, takes two arguments:
+Note that the titles below here like general or network are simply to make it 
+easier to find documentation on what you want, the functions are all availible 
+in this versions object.
+
+=head2 General
+
+Basic counting, splitting and data manipulation functions.
+
+=head3 type
+
+Return the type of an object, this is just a simple wrapper around ref()
+for the sake of clarity.
+
+Via CommandCommon:
+
+    $common->exec('type',$someScalar);
+
+Or directly via this module:
+
+    $v1->type($someScalar);
+
+Expected arguments:
+
+    Arg1: The object.
+
+Return: the type.
+
+=cut
+
+sub type($self,$object) {
+    return ref(\$object);
+}
+
+=head3 count_occurrences
+
+Count the occurences of a regex or string within a string, takes two mandatory 
+arguments.
+
+Via CommandCommon:
+
+    $common->exec('count_occurrences',qr/word/,'word and word');
+
+Or directly via this module:
+
+    $v1->count_occurrences(qr/word/,'word of words in words');
+
+Expected arguments:
 
     arg1: The match criteria as a qr// or string
     arg2: The data to match against
@@ -77,11 +142,19 @@ sub count_occurrences($self,$match_criteria,$data) {
     return $count;
 }
 
-=head2 split_on_seperator
+=head3 split_on_seperator
 
 Split a string into two components a head and a tail.
 
-Accepts 1 mandatory argument and 1 optional argument:
+Via CommandCommon:
+
+    $common->exec('split_on_seperator','word and word',' and ');
+
+Or directly via this module:
+
+    $v1->count_occurrences('word and word',' and ');
+
+Accepts 1 mandatory argument and 1 optional argument, example:
 
     Arg1: The string to operate on.
     Arg2: The optional seperator, defaults to ':'.
@@ -98,13 +171,75 @@ sub split_on_seperator($self,$string,$seperator = ':') {
     return ($head,$tail);
 }
 
-=head2 test_tcp4_bind
+=head2 Length
 
-Attempt to bind a port on ipv4/tcp.
+Related to the length of various things
 
-If you wish to check for permission to just bind anyport, you should use '0'.
+=head3 array_length
 
-Accepts 2 mandatory arguments:
+Count the length of an array, example call:
+
+Via CommandCommon:
+
+    $common->exec('array_length',@array);
+
+Or directly via this module:
+
+    $v1->array_length(@array);
+
+Expected arguments:
+
+    arg1: The array
+
+Will return the number of elements in the target array
+
+=cut
+
+sub array_length($self,@array) {
+    return scalar(@array);
+}
+
+=head3 arrayref_length
+
+Count the length of an array an arrayref points to
+
+Via CommandCommon:
+
+    $common->exec('arrayref_length',\@array);
+
+Or directly via this module:
+
+    $v1->arrayref_length(\@array);
+
+Expected arguments:
+
+    Arg1: The arrayref
+
+Will return the number of elements in the target array
+
+=cut
+
+sub arrayref_length($self,$arrayref) {
+    return scalar(@{$arrayref});
+}
+
+=head2 Network related
+
+Speifically for testing the validity of ips or if they are bindable etc.
+
+=head3 test_tcp4_bind
+
+Attempt to bind a port on ipv4/tcp and report if succesful
+
+Via CommandCommon:
+
+    $common->exec('test_tcp4_bind','127.0.0.1',8080);
+
+Or directly via this module:
+
+    $v1->test_tcp4_bind('127.0.0.1',8080);
+
+Expected arguments:
 
     Arg1: An ip
     Arg2: A port
@@ -131,9 +266,17 @@ sub test_tcp4_bind($self,$bind_ip,$bind_port) {
     return $error_detected;
 }
 
-=head2 valid_ipv4
+=head3 valid_ipv4
 
 Check if the provided ip is a valid ipv4 address.
+
+Via CommandCommon:
+
+    $common->exec('test_tcp4_bind','127.0.0.1');
+
+Or directly via this module:
+
+    $v1->valid_ipv4('127.0.0.1');
 
 Accepts 1 mandatory argument of an ipv4 address.
 

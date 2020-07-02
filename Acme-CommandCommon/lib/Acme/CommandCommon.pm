@@ -94,7 +94,7 @@ sub new {
         # Look through availible functions and find the closest to our target
         # version
         foreach my $function (
-            keys %{ $self->{plugins}->{$plugin_name}->{functions} }
+            @{ $self->{plugins}->{$plugin_name}->{functions} }
         ) {
             if (
                 !$plugin_sort->{$function} 
