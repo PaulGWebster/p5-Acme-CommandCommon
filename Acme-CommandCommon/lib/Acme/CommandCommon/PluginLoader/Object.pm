@@ -64,8 +64,6 @@ BEGIN {
     }
 }
 
-=cut
-
 sub new {
     my $class = shift;
     my %opts  = @_;
